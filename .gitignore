@@ -1,0 +1,9 @@
+.env
+.mypy_cache
+.venv
+.vscode
+tmp
+*.csv
+*.log
+.DS_Store
+._*

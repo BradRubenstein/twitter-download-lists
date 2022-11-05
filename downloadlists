@@ -1,0 +1,82 @@
+#!/usr/bin/env python3
+
+import dotenv
+import twitter
+import csv
+import os
+from pprint import pprint
+import logging
+import sys
+from datetime import datetime, timezone
+
+
+def loadapi():
+    dotenv.load_dotenv()
+    return twitter.Api(
+        consumer_key=os.getenv("TWITTER_CONSUMER_KEY"),
+        consumer_secret=os.getenv("TWITTER_CONSUMER_SECRET"),
+        access_token_key=os.getenv("TWITTER_ACCESS_TOKEN_KEY"),
+        access_token_secret=os.getenv("TWITTER_ACCESS_TOKEN_SECRET"),
+        sleep_on_rate_limit=True,
+    )
+
+
+def outputFileName(api):
+    currentTime = datetime.now(tz=timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    # hack to get my user screen name, since python-twitter doesn't have it
+    url = "%s/account/settings.json" % api.base_url
+    me = api._RequestUrl(url, "GET").json()["screen_name"]
+    return "twitter-lists-{}-{}.csv".format(me, currentTime)
+
+
+logging.basicConfig(level=logging.INFO)
+api = loadapi()
+
+includeBlocks = False
+
+userFields = [
+    "id",
+    "name",
+    "screen_name",
+    "followers_count",
+    "friends_count",
+    "statuses_count",
+    "created_at",
+]
+
+listFields = [
+    "id",
+    "name",
+    "full_name",
+    "member_count",
+    "subscriber_count",
+]
+
+
+filename = outputFileName(api)
+print("Saving output to " + filename + "...", file=sys.stderr, flush=True)
+with open(filename, "w", newline="") as f:
+    writer = csv.writer(f)
+    writer.writerow(["type"] + userFields)
+    users = api.GetFriends(skip_status=True, include_user_entities=False)
+    for u in users:
+        writer.writerow(["Following"] + [getattr(u, i) for i in userFields])
+
+    users = api.GetFollowers(skip_status=True, include_user_entities=False)
+    for u in users:
+        writer.writerow(["Follower"] + [getattr(u, i) for i in userFields])
+
+    if includeBlocks: # the rate limiting on this is harsh, so it takes a long time
+        users = api.GetBlocks(skip_status=True, include_entities=False)
+        for u in users:
+            writer.writerow(["Blocked"] + [getattr(u, i) for i in userFields])
+
+    lists = api.GetLists()
+    for l in lists:
+        writer.writerow(["List"] + [getattr(l, i) for i in listFields])
+        users = api.GetListMembers(l.id, include_entities=False)
+        for u in users:
+            writer.writerow(["List:" + l.name] + [getattr(u, i) for i in userFields])
+
+
+print("DONE: output is in {}".format(filename), file=sys.stderr)
