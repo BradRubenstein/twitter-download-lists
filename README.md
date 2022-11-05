@@ -8,8 +8,9 @@ This is just a few dozen lines of python that use the V1 Twitter
 API.  You need to be comfortable creating an app in the Twitter
 developer portal, and dealing with python scripts.
 
-If you're not a programmer, you can get friends and followers using
+If you're not a programmer, you can export friends and followers lists using
 this online tool: https://commentpicker.com/twitter-export.php
+(but it doesn't download list membership).
 
 Instructions to create a new twitter app are at
 https://python-twitter.readthedocs.io/en/latest/getting_started.html.  You
