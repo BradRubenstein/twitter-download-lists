@@ -24,6 +24,7 @@ to read your account.  These four tokens go into the .env file.
 % cp .env.example .env
 % edit .env # type in tokens from the Twitter developer app: both for you as developer and you as user
 % ./downloadlists
+Saving output to twitter-lists-BradRubenstein-20221105T133202Z.csv...
 ```
 
 Note: the program will sleep to accommodate twitters rate limiting. So it may take a while.
