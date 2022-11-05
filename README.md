@@ -1,6 +1,6 @@
 # Download Twitter Follows and Lists
 
-A simple Twitter App to download a list of friends, followers, blocks, and list members.
+A simple Twitter App to export a list of your own friends, followers, blocks, and list members.
 
 ## For Programmers
 
