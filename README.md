@@ -9,11 +9,11 @@ API.  You need to be comfortable creating an app in the Twitter
 developer portal, and dealing with python scripts.
 
 If you're not a programmer, you can export friends and followers lists using
-this online tool: https://commentpicker.com/twitter-export.php
+this online tool: [CommentPicker Twitter Export](https://commentpicker.com/twitter-export.php)
 (but it doesn't download list membership).
 
 Instructions to create a new twitter app are at
-https://python-twitter.readthedocs.io/en/latest/getting_started.html.  You
+[Python Twitter: Getting Started](https://python-twitter.readthedocs.io/en/latest/getting_started.html).  You
 need to have the Twitter developer portal issue four tokens, two
 for the app you just created, and two to give the app permission
 to read your account.  These four tokens go into the .env file.
